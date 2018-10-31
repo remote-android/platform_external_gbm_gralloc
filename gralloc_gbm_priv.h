@@ -46,7 +46,7 @@ int gralloc_gbm_get_gem_handle(buffer_handle_t handle);
 int gralloc_gbm_bo_lock(buffer_handle_t handle, int x, int y, int w, int h, int enable_write, void **addr);
 int gralloc_gbm_bo_unlock(buffer_handle_t handle);
 
-struct gbm_device *gbm_dev_create(void);
+struct gbm_device *gbm_dev_create(bool master);
 void gbm_dev_destroy(struct gbm_device *gbm);
 
 #ifdef __cplusplus
