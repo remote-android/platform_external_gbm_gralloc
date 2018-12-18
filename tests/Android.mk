@@ -1,4 +1,5 @@
-# Copyright (C) 2016 Linaro, Ltd., Rob Herring <robh@kernel.org>
+# Copyright 2016 The Chromium OS Authors
+# Copyright 2018 Mauro Rossi <issor.oruam@gmailc.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -21,24 +22,15 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
+include $(LOCAL_PATH)/Makefile.sources
 
-LOCAL_SRC_FILES := \
-	gralloc_gbm.cpp \
-	gralloc.cpp
+LOCAL_SRC_FILES := $(GRALLOCTEST_FILES)
+
+LOCAL_MODULE := gralloctest
 
 LOCAL_SHARED_LIBRARIES := \
-	libdrm \
-	libgbm \
-	liblog \
+	libhardware \
+	libsync \
 	libcutils
 
-LOCAL_EXPORT_C_INCLUDE_DIRS := \
-	$(LOCAL_PATH)
-
-LOCAL_MODULE := gralloc.gbm
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_PROPRIETARY_MODULE := true
-
-include $(BUILD_SHARED_LIBRARY)
-include $(LOCAL_PATH)/tests/Android.mk
+include $(BUILD_EXECUTABLE)
