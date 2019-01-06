@@ -306,13 +306,13 @@ void gbm_dev_destroy(struct gbm_device *gbm)
 	close(fd);
 }
 
-struct gbm_device *gbm_dev_create(void)
+struct gbm_device *gbm_dev_create(bool master)
 {
 	struct gbm_device *gbm;
 	char path[PROPERTY_VALUE_MAX];
 	int fd;
 
-	property_get("gralloc.gbm.device", path, "/dev/dri/renderD128");
+	property_get("gralloc.gbm.device", path, master ? "/dev/dri/card0" : "/dev/dri/renderD128");
 	fd = open(path, O_RDWR | O_CLOEXEC);
 	if (fd < 0) {
 		ALOGE("failed to open %s", path);

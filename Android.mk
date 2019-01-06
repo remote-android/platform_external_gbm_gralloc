@@ -32,6 +32,8 @@ LOCAL_SHARED_LIBRARIES := \
 	liblog \
 	libcutils
 
+LOCAL_STATIC_LIBRARIES := libdrm_framebuffer
+
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
 	$(LOCAL_PATH)
 
