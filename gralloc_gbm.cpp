@@ -238,15 +238,16 @@ static struct gbm_bo *gbm_alloc(struct gbm_device *gbm,
 	return bo;
 }
 
-void gbm_free(buffer_handle_t handle)
+int gbm_free(buffer_handle_t handle)
 {
 	struct gbm_bo *bo = gralloc_gbm_bo_from_handle(handle);
 
 	if (!bo)
-		return;
+		return -EINVAL;
 
 	gbm_bo_handle_map.erase(handle);
 	gbm_bo_destroy(bo);
+	return 0;
 }
 
 /*
@@ -355,9 +356,7 @@ int gralloc_gbm_handle_register(buffer_handle_t _handle, struct gbm_device *gbm)
  */
 int gralloc_gbm_handle_unregister(buffer_handle_t handle)
 {
-	gbm_free(handle);
-
-	return 0;
+	return gbm_free(handle);
 }
 
 /*
