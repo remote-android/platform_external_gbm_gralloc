@@ -34,6 +34,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <assert.h>
+#include <xf86drm.h>
 
 #include <hardware/gralloc.h>
 #include <system/graphics.h>
@@ -313,8 +314,11 @@ struct gbm_device *gbm_dev_create(bool master)
 	char path[PROPERTY_VALUE_MAX];
 	int fd;
 
-	property_get("gralloc.gbm.device", path, master ? "/dev/dri/card0" : "/dev/dri/renderD128");
-	fd = open(path, O_RDWR | O_CLOEXEC);
+	if (property_get("gralloc.gbm.device", path, NULL) > 0)
+		fd = open(path, O_RDWR | O_CLOEXEC);
+	else
+		fd = drmOpenByFB(0, master ? DRM_NODE_PRIMARY : DRM_NODE_RENDER);
+
 	if (fd < 0) {
 		ALOGE("failed to open %s", path);
 		return NULL;
