@@ -30,7 +30,8 @@ LOCAL_SHARED_LIBRARIES := \
 	libdrm \
 	libgbm \
 	liblog \
-	libcutils
+	libcutils \
+	libhardware \
 
 LOCAL_STATIC_LIBRARIES := libdrm_framebuffer
 
