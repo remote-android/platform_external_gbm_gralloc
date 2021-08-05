@@ -309,6 +309,8 @@ void gbm_dev_destroy(struct gbm_device *gbm)
 	close(fd);
 }
 
+static int drmOpenByFB(int, int) { return -1; } // HACKED
+
 struct gbm_device *gbm_dev_create(bool master)
 {
 	struct gbm_device *gbm;
