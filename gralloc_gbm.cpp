@@ -111,6 +111,9 @@ static int gralloc_gbm_get_bpp(int format)
 	int bpp;
 
 	switch (format) {
+	case HAL_PIXEL_FORMAT_RGBA_FP16:
+		bpp = 8;
+		break;
 	case HAL_PIXEL_FORMAT_RGBA_8888:
 	case HAL_PIXEL_FORMAT_RGBX_8888:
 	case HAL_PIXEL_FORMAT_BGRA_8888:
@@ -130,6 +133,7 @@ static int gralloc_gbm_get_bpp(int format)
 		bpp = 1;
 		break;
 	default:
+		ALOGE("gralloc_gbm_get_bpp: format: %d", format);
 		bpp = 0;
 		break;
 	}
