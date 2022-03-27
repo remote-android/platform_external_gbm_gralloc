@@ -33,8 +33,6 @@ LOCAL_SHARED_LIBRARIES := \
 	libcutils \
 	libhardware \
 
-LOCAL_STATIC_LIBRARIES := libdrm_framebuffer
-
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
 	$(LOCAL_PATH)
 

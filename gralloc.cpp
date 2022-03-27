@@ -35,7 +35,6 @@
 #include <system/graphics.h>
 
 #include <gbm.h>
-#include <drm_framebuffer.h>
 
 #include "gralloc_drm.h"
 #include "gralloc_gbm_priv.h"
@@ -45,7 +44,6 @@ struct gbm_module_t {
 
 	pthread_mutex_t mutex;
 	struct gbm_device *gbm;
-	struct drm_framebuffer *fb;
 };
 
 /*
@@ -107,8 +105,6 @@ static int gbm_mod_register_buffer(const gralloc_module_t *mod,
 
 	pthread_mutex_lock(&dmod->mutex);
 	err = gralloc_gbm_handle_register(handle, dmod->gbm);
-	if (err == 0 && dmod->fb)
-		drm_framebuffer_import(dmod->fb, handle);
 	pthread_mutex_unlock(&dmod->mutex);
 
 	return err;
@@ -235,19 +231,6 @@ static int gbm_mod_open_gpu0(struct gbm_module_t *dmod, hw_device_t **dev)
 	return 0;
 }
 
-static int gbm_mod_open_fb0(struct gbm_module_t *dmod, hw_device_t **dev)
-{
-	int err = gbm_init(dmod, true);
-	if (err)
-		return err;
-
-	pthread_mutex_lock(&dmod->mutex);
-	err = drm_framebuffer_open(gbm_device_get_fd(dmod->gbm), &dmod->fb, dev);
-	pthread_mutex_unlock(&dmod->mutex);
-
-	return err;
-}
-
 static int gbm_mod_open(const struct hw_module_t *mod,
 		const char *name, struct hw_device_t **dev)
 {
@@ -256,8 +239,6 @@ static int gbm_mod_open(const struct hw_module_t *mod,
 
 	if (strcmp(name, GRALLOC_HARDWARE_GPU0) == 0)
 		err = gbm_mod_open_gpu0(dmod, dev);
-	else if (strcmp(name, GRALLOC_HARDWARE_FB0) == 0)
-		err = gbm_mod_open_fb0(dmod, dev);
 	else
 		err = -EINVAL;
 
