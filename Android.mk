@@ -27,8 +27,8 @@ LOCAL_SRC_FILES := \
 	gralloc.cpp
 
 LOCAL_SHARED_LIBRARIES := \
-	libdrm \
-	libgbm_mesa \
+	libdrm.so.2 \
+	libgbm.so.1 \
 	liblog \
 	libcutils \
 	libhardware \
@@ -37,6 +37,12 @@ LOCAL_STATIC_LIBRARIES := libdrm_framebuffer
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := \
 	$(LOCAL_PATH)
+
+prebuilt_root := device/redroid-prebuilts/prebuilts
+LOCAL_CFLAGS_$(TARGET_ARCH) += -I $(prebuilt_root)/$(TARGET_ARCH)/include -I $(prebuilt_root)/$(TARGET_ARCH)/include/libdrm
+ifneq ($(TARGET_2ND_ARCH),)
+LOCAL_CFLAGS_$(TARGET_2ND_ARCH) += -I $(prebuilt_root)/$(TARGET_2ND_ARCH)/include -I $(prebuilt_root)/$(TARGET_2ND_ARCH)/include/libdrm
+endif
 
 LOCAL_MODULE := gralloc.gbm
 LOCAL_MODULE_TAGS := optional
